@@ -115,3 +115,11 @@ func test_translation_coverage():
 	localization.update_coverage()
 	assert_eq(localization.get_translation_coverage(0), 100, "日本語は 100%")
 	assert_eq(localization.get_translation_coverage(1), 50, "英語は 50%")
+
+
+## language_type のセッターで changed_language シグナルが発行されることを確認。
+func test_changed_language_signal():
+	watch_signals(localization)
+	localization.language_type = 1
+	assert_signal_emitted(localization, "changed_language", "言語変更時に changed_language が発行されること")
+	assert_eq(localization.language_type, 1, "language_type が更新されること")
