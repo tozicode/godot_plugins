@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://bb7ciklf5mbwv"]
+
+[ext_resource type="FontFile" uid="uid://wvdecdaloeot" path="res://fonts/07LogoTypeGothic7.otf" id="1_qxh1w"]
+
+[resource]
+font = ExtResource("1_qxh1w")
+font_size = 30
+font_color = Color(0, 0, 0, 1)
+outline_size = 5

@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqbapdxn0j3s5"]
+
+[ext_resource type="Texture2D" uid="uid://kgrbiab1x5qf" path="res://cartoon/frames/think_down.png" id="1_40bqc"]
+[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://cartoon/cartoon_speech.gd" id="1_vdfm5"]
+[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://cartoon/frames/label_settings_black.tres" id="2_io3vm"]
+
+[node name="ThinkDownRight" type="Node2D"]
+script = ExtResource("1_vdfm5")
+text = "テスト"
+text_key = "__undefined__"
+frame_type = 5
+position_delta = Vector2(40, 80)
+
+[node name="Frame" type="NinePatchRect" parent="."]
+offset_right = 169.0
+offset_bottom = 135.0
+texture = ExtResource("1_40bqc")
+region_rect = Rect2(0, 0, 320.663, 199.447)
+patch_margin_left = 121
+patch_margin_top = 73
+patch_margin_right = 48
+patch_margin_bottom = 31
+
+[node name="Label" type="Label" parent="."]
+offset_left = 40.0
+offset_top = 80.0
+offset_right = 112.0
+offset_bottom = 105.0
+text = "テスト"
+label_settings = ExtResource("2_io3vm")

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://pfbsnd6vniol"]
+
+[ext_resource type="Script" uid="uid://dhpi272ktr4rh" path="res://addons/cartoon_scene_editor/debug_target.gd" id="1_3so2o"]
+
+[resource]
+script = ExtResource("1_3so2o")
+scene_path = "res://cartoon/scenes/gate/meet_nea_1.tscn"

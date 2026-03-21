@@ -1,0 +1,175 @@
+[gd_scene load_steps=5 format=3 uid="uid://cygnn0atpc8hi"]
+
+[ext_resource type="Texture2D" uid="uid://1ax64aq6urws" path="res://addons/cartoon/editor/icon_search.png" id="1_414kc"]
+[ext_resource type="Texture2D" uid="uid://bxl0dfr4ahm2e" path="res://addons/cartoon/editor/icon_panel_replace.png" id="1_kyl5l"]
+[ext_resource type="Texture2D" uid="uid://dbl0qnxkot0dd" path="res://addons/cartoon/editor/icon_panel_add.png" id="2_f0ts0"]
+[ext_resource type="Texture2D" uid="uid://ch41coif3kjb3" path="res://addons/cartoon/editor/icon_panel_delete.png" id="4_k0cp4"]
+
+[node name="Controler" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="Viewer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Viewer"]
+clip_children = 1
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="Tabs" type="TabContainer" parent="."]
+z_index = 10
+layout_mode = 2
+current_tab = 0
+
+[node name="Sprite" type="VBoxContainer" parent="Tabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="SpriteList" type="ItemList" parent="Tabs/Sprite"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+select_mode = 1
+max_columns = 0
+fixed_icon_size = Vector2i(100, 100)
+
+[node name="Filter" type="HBoxContainer" parent="Tabs/Sprite"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Tabs/Sprite/Filter"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Filter"
+
+[node name="TextEdit" type="TextEdit" parent="Tabs/Sprite/Filter"]
+layout_mode = 2
+size_flags_horizontal = 3
+emoji_menu_enabled = false
+scroll_fit_content_height = true
+
+[node name="Button" type="Button" parent="Tabs/Sprite/Filter"]
+layout_mode = 2
+icon = ExtResource("1_414kc")
+
+[node name="ChangeSpriteButton" type="Button" parent="Tabs/Sprite"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "スプライトを置き換え"
+icon = ExtResource("1_kyl5l")
+
+[node name="Speech" type="VBoxContainer" parent="Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Frame" type="HBoxContainer" parent="Tabs/Speech"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Speech/Frame"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Frame"
+
+[node name="Selector" type="OptionButton" parent="Tabs/Speech/Frame"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddSpeechButton" type="Button" parent="Tabs/Speech"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "台詞を追加"
+icon = ExtResource("2_f0ts0")
+
+[node name="Onomatopoeia" type="VBoxContainer" parent="Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="OnomatopoeiaList" type="ItemList" parent="Tabs/Onomatopoeia"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+max_columns = 5
+fixed_icon_size = Vector2i(80, 80)
+
+[node name="AddOnomatopoeiaButton" type="Button" parent="Tabs/Onomatopoeia"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "オノマトペを追加"
+icon = ExtResource("2_f0ts0")
+
+[node name="Layout" type="VBoxContainer" parent="Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="Current" type="HBoxContainer" parent="Tabs/Layout"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Layout/Current"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Value"
+
+[node name="Value" type="TextEdit" parent="Tabs/Layout/Current"]
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+
+[node name="HSeparator" type="HSeparator" parent="Tabs/Layout"]
+layout_mode = 2
+
+[node name="LayoutTypeList" type="HBoxContainer" parent="Tabs/Layout"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Layout/LayoutTypeList"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Type"
+
+[node name="OptionButton" type="OptionButton" parent="Tabs/Layout/LayoutTypeList"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LayoutScaleSlider" type="HBoxContainer" parent="Tabs/Layout"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Tabs/Layout/LayoutScaleSlider"]
+layout_mode = 2
+text = "Scale"
+
+[node name="ScaleLabel" type="Label" parent="Tabs/Layout/LayoutScaleSlider"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "100%"
+horizontal_alignment = 2
+
+[node name="HSlider" type="HSlider" parent="Tabs/Layout/LayoutScaleSlider"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 75.0
+step = 5.0
+value = 100.0
+
+[node name="SetLayoutButton" type="Button" parent="Tabs/Layout"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "レイアウトを設定"
+icon = ExtResource("1_kyl5l")
+
+[node name="DeleteLayoutButton" type="Button" parent="Tabs/Layout"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "レイアウトを削除"
+icon = ExtResource("4_k0cp4")

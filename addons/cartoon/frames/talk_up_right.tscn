@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dyy6karxovx34"]
+
+[ext_resource type="Texture2D" uid="uid://b0ndxa8shlj41" path="res://cartoon/frames/talk_up.png" id="1_0daxs"]
+[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://cartoon/cartoon_speech.gd" id="1_5uaf7"]
+[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://cartoon/frames/label_settings_black.tres" id="2_m0kvc"]
+
+[node name="TalkUpRight" type="Node2D"]
+script = ExtResource("1_5uaf7")
+text = "テスト"
+text_key = "__undefined__"
+frame_type = 3
+
+[node name="Frame" type="NinePatchRect" parent="."]
+offset_top = -141.0
+offset_right = 170.0
+texture = ExtResource("1_0daxs")
+region_rect = Rect2(0, 0, 320.663, 199.447)
+patch_margin_left = 96
+patch_margin_top = 27
+patch_margin_right = 48
+patch_margin_bottom = 76
+
+[node name="Label" type="Label" parent="."]
+offset_left = 40.0
+offset_top = -106.0
+offset_right = 130.0
+offset_bottom = -75.0
+text = "テスト"
+label_settings = ExtResource("2_m0kvc")

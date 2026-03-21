@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3qs2nbkkvcuc"]
+
+[ext_resource type="Texture2D" uid="uid://1ax64aq6urws" path="res://addons/cartoon/editor/icon_search.png" id="1_cmocr"]
+[ext_resource type="Texture2D" uid="uid://cgmmmwgacuedc" path="res://addons/cartoon/editor/icon_scene_add.png" id="1_eqp6t"]
+[ext_resource type="Texture2D" uid="uid://ccwlf65sa54jy" path="res://addons/cartoon/editor/icon_scene_play.png" id="2_52ict"]
+
+[node name="CustomControler" type="VBoxContainer"]
+offset_right = 327.0
+offset_bottom = 370.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Sprite"
+
+[node name="SpriteList" type="ItemList" parent="."]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+select_mode = 1
+max_columns = 5
+fixed_icon_size = Vector2i(100, 100)
+
+[node name="Filter" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Filter"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Filter"
+
+[node name="TextEdit" type="TextEdit" parent="Filter"]
+layout_mode = 2
+size_flags_horizontal = 3
+emoji_menu_enabled = false
+scroll_fit_content_height = true
+
+[node name="Button" type="Button" parent="Filter"]
+layout_mode = 2
+icon = ExtResource("1_cmocr")
+
+[node name="AddPanelButton" type="Button" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "コマを追加"
+icon = ExtResource("1_eqp6t")
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play"
+
+[node name="TestPlayButton" type="Button" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "テストプレイ"
+icon = ExtResource("2_52ict")
