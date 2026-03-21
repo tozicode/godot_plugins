@@ -23,9 +23,6 @@ func after_each():
 
 ## scan_resource で LocalizedString プロパティを検出できることを確認。
 func test_scan_resource_detects_localized_string():
-	# テスト用のリソースを作成
-	var res = Resource.new()
-	# Resource に直接 LocalizedString プロパティを追加するのは難しいため、
 	# LocalizedString 自体をスキャン対象としてテスト
 	var ls = LocalizedString.new()
 	ls.text_key = "scan_test"
