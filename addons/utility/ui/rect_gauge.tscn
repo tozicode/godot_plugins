@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://addons/utility/ui/rect_gauge.gd" id="1_7euh1"]
+
+[node name="RectGauge" type="ColorRect"]
+offset_right = 200.0
+offset_bottom = 10.0
+color = Color(0, 0, 0, 0.5019608)
+script = ExtResource("1_7euh1")
+value = 50.0
+color_front = Color(1, 0.38039216, 0.08627451, 1)
+color_delta = Color(1, 1, 1, 1)
+
+[node name="Delta" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 100.0
+offset_bottom = 9.0
+
+[node name="Front" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 100.0
+offset_bottom = 9.0
+color = Color(1, 0.38039216, 0.08627451, 1)
