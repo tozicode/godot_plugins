@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://owcwl3ao2end"]
 
 [ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://addons/cartoon/cartoon_speech.gd" id="1_twr3j"]
-[ext_resource type="Texture2D" uid="uid://c8rng2agt6mu0" path="res://addons/cartoon/frames/talk_down.png" id="1_xx3ce"]
+[ext_resource type="Texture2D" uid="uid://c8rng2agt6mu0" path="res://cartoon/frames/talk_down.png" id="1_xx3ce"]
 [ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://addons/cartoon/frames/label_settings_black.tres" id="2_137rh"]
 
 [node name="TalkDownRight" type="Node2D"]

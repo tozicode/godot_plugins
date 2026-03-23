@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://50ny4mh6snik"]
 
-[ext_resource type="Texture2D" uid="uid://cxglddgpc71ql" path="res://addons/cartoon/frames/monologue.png" id="1_m88m0"]
+[ext_resource type="Texture2D" uid="uid://cxglddgpc71ql" path="res://cartoon/frames/monologue.png" id="1_m88m0"]
 [ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://addons/cartoon/cartoon_speech.gd" id="1_udrrh"]
 [ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://addons/cartoon/frames/label_settings_black.tres" id="2_km2ld"]
 
