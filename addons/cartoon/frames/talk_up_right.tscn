@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dyy6karxovx34"]
 
-[ext_resource type="Texture2D" uid="uid://b0ndxa8shlj41" path="res://cartoon/frames/talk_up.png" id="1_0daxs"]
-[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://cartoon/cartoon_speech.gd" id="1_5uaf7"]
-[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://cartoon/frames/label_settings_black.tres" id="2_m0kvc"]
+[ext_resource type="Texture2D" uid="uid://b0ndxa8shlj41" path="res://addons/cartoon/frames/talk_up.png" id="1_0daxs"]
+[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://addons/cartoon/cartoon_speech.gd" id="1_5uaf7"]
+[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://addons/cartoon/frames/label_settings_black.tres" id="2_m0kvc"]
 
 [node name="TalkUpRight" type="Node2D"]
 script = ExtResource("1_5uaf7")

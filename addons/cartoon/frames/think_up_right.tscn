@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://bqge1yt1yld02"]
 
-[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://cartoon/cartoon_speech.gd" id="1_a2isj"]
-[ext_resource type="Texture2D" uid="uid://bafmtvkei5uno" path="res://cartoon/frames/think_up.png" id="1_xbnnj"]
-[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://cartoon/frames/label_settings_black.tres" id="2_kqbub"]
+[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://addons/cartoon/cartoon_speech.gd" id="1_a2isj"]
+[ext_resource type="Texture2D" uid="uid://bafmtvkei5uno" path="res://addons/cartoon/frames/think_up.png" id="1_xbnnj"]
+[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://addons/cartoon/frames/label_settings_black.tres" id="2_kqbub"]
 
 [node name="ThinkUpRight" type="Node2D"]
 script = ExtResource("1_a2isj")

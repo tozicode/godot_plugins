@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://bcw5hhoxaevjt"]
 
-[ext_resource type="Script" uid="uid://dsoki87jyh1ut" path="res://cartoon/cartoon_panel.gd" id="1_5o3hi"]
-[ext_resource type="Texture2D" uid="uid://dfx18ogpw2l2l" path="res://cartoon/frames/sprite_frame.png" id="2_7jnoe"]
-[ext_resource type="Texture2D" uid="uid://dojr0u770ct8u" path="res://cartoon/icon_group.png" id="3_j3pf7"]
+[ext_resource type="Script" uid="uid://dsoki87jyh1ut" path="res://addons/cartoon/cartoon_panel.gd" id="1_5o3hi"]
+[ext_resource type="Texture2D" uid="uid://dfx18ogpw2l2l" path="res://addons/cartoon/frames/sprite_frame.png" id="2_7jnoe"]
+[ext_resource type="Texture2D" uid="uid://dojr0u770ct8u" path="res://addons/cartoon/icon_group.png" id="3_j3pf7"]
 
 [node name="CartoonPanel" type="Node2D"]
 script = ExtResource("1_5o3hi")

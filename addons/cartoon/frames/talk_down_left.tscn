@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://ddl0cwqxaw8q"]
 
-[ext_resource type="Texture2D" uid="uid://c8rng2agt6mu0" path="res://cartoon/frames/talk_down.png" id="1_ryxrk"]
-[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://cartoon/cartoon_speech.gd" id="1_uyxdq"]
-[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://cartoon/frames/label_settings_black.tres" id="2_ikhen"]
+[ext_resource type="Texture2D" uid="uid://c8rng2agt6mu0" path="res://addons/cartoon/frames/talk_down.png" id="1_ryxrk"]
+[ext_resource type="Script" uid="uid://cc2eoy2mger78" path="res://addons/cartoon/cartoon_speech.gd" id="1_uyxdq"]
+[ext_resource type="LabelSettings" uid="uid://bb7ciklf5mbwv" path="res://addons/cartoon/frames/label_settings_black.tres" id="2_ikhen"]
 
 [node name="TalkDownLeft" type="Node2D"]
 script = ExtResource("1_uyxdq")
