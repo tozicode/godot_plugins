@@ -97,7 +97,7 @@ func _setup_onomatopoeia_list():
 	if item_list == null:
 		printerr("[CartoonPanelEditor] OnomatopoeiaList is not found.")
 		return
-	var sprite_dir = CartoonOnomatopoeia.get_sprite_dir()
+	var sprite_dir := CartoonOnomatopoeia.get_sprite_dir()
 	for filename in DirAccess.get_files_at(sprite_dir):
 		if filename.ends_with(".png"):
 			var filepath = sprite_dir + "/" + filename
