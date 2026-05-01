@@ -154,8 +154,12 @@ func _on_left_mouse_released(release_pos :Vector2):
 		elif -dx >= SWIPE_MIN_DISTANCE:
 			last_swipe_direction = SwipeDirection.RIGHT_TO_LEFT
 
-	if count_scenes() > 0:
+	if _has_pending_scenes():
 		progressed.emit()
+		# progressed の発火によりシーンが同期的に完了する場合がある。
+		# 全シーンが完了していれば追加のクリックを要求せず即座に遷移する。
+		if not _has_pending_scenes():
+			progressed_finished.emit()
 	else:
 		if last_swipe_direction == SwipeDirection.NONE:
 			progressed_finished.emit()
@@ -222,7 +226,9 @@ func initialize():
 
 ## 指定のシーンの再生を行う。
 func run_scene(scene :CartoonScene):
-	add_scene(scene)
+	# すでに scenes_node の子である場合は再登録しない。
+	if scene.get_parent() != scenes_node:
+		add_scene(scene)
 	print("[CartoonPlayer] run scene: ", scene.name)
 	scene.on_beginning_scene()
 	started_scene.emit(scene)
@@ -246,7 +252,12 @@ func add_panel(panel :CartoonPanel):
 	panel.name = "Panel_%d" % panels_node.get_child_count()
 	panel.make_tween_on_added_to_player()
 	panels_node.add_child(panel)
+	var was_empty := count_panels() == 1
 	focus_index = -1
+	# 最初の1コマ目は focus_index が 0→0 で変化しないため
+	# changed_focus が発火せずカメラ移動が行われない。手動で補う。
+	if was_empty:
+		move_panels_node_position()
 
 
 ## 指定のインデックスに対応するコマを含むグループを返す。
@@ -284,3 +295,11 @@ func count_panels() -> int:
 ## 再生中あるいは再生予約中のシーンの数を返す。
 func count_scenes() -> int:
 	return scenes_node.get_child_count()
+
+
+## 未完了のシーンが残っているかどうかを返す。
+func _has_pending_scenes() -> bool:
+	for i in count_scenes():
+		if not (scenes_node.get_child(i) as CartoonScene).has_run:
+			return true
+	return false
