@@ -1,8 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://88k237860gow"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" uid="uid://dn40ufwxyi7mv" path="res://addons/cartoon/editor/cartoon_scene_debugger.gd" id="1_4ejf0"]
-[ext_resource type="PackedScene" uid="uid://d3w2mwli26lnf" path="res://cartoon/cartoon_player.tscn" id="2_mc0i0"]
-[ext_resource type="Resource" uid="uid://pfbsnd6vniol" path="res://addons/cartoon/editor/debug_target.tres" id="2_qmrkf"]
+[ext_resource type="Script" path="res://addons/cartoon/editor/cartoon_scene_debugger.gd" id="1_4ejf0"]
+[ext_resource type="PackedScene" path="res://cartoon/cartoon_player.tscn" id="2_mc0i0"]
+[ext_resource type="Resource" path="res://addons/cartoon/editor/debug_target.tres" id="2_qmrkf"]
 
 [node name="CartoonSceneDebugger" type="Control"]
 layout_mode = 3

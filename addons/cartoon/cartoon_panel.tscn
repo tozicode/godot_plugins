@@ -1,23 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcw5hhoxaevjt"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://dsoki87jyh1ut" path="res://addons/cartoon/cartoon_panel.gd" id="1_5o3hi"]
-[ext_resource type="Texture2D" uid="uid://dfx18ogpw2l2l" path="res://cartoon/frames/sprite_frame.png" id="2_7jnoe"]
-[ext_resource type="Texture2D" uid="uid://dojr0u770ct8u" path="res://cartoon/icon_group.png" id="3_j3pf7"]
+[ext_resource type="Script" path="res://addons/cartoon/cartoon_panel.gd" id="1_5o3hi"]
+[ext_resource type="Texture2D" path="res://cartoon/frames/sprite_frame.png" id="2_7jnoe"]
+[ext_resource type="Script" path="res://addons/cartoon/cartoon_layout.gd" id="2_wv60r"]
+[ext_resource type="Texture2D" path="res://cartoon/icon_group.png" id="3_j3pf7"]
 
-[node name="CartoonPanel" type="Node2D"]
+[sub_resource type="Resource" id="Resource_780tq"]
+script = ExtResource("2_wv60r")
+
+[node name="CartoonPanel" type="Node2D" unique_id=362313415]
 script = ExtResource("1_5o3hi")
+layout = SubResource("Resource_780tq")
 
-[node name="Sprites" type="Node2D" parent="."]
+[node name="Sprites" type="Node2D" parent="." unique_id=1915506628]
 
-[node name="Onomatopoeias" type="Node2D" parent="."]
+[node name="Onomatopoeias" type="Node2D" parent="." unique_id=1949814323]
 z_index = 10
 
-[node name="Speeches" type="Node2D" parent="."]
+[node name="Speeches" type="Node2D" parent="." unique_id=1048836904]
 z_index = 20
 
-[node name="AudioPlayers" type="Node" parent="."]
+[node name="AudioPlayers" type="Node" parent="." unique_id=602256977]
 
-[node name="Frame" type="NinePatchRect" parent="."]
+[node name="Frame" type="NinePatchRect" parent="." unique_id=66241204]
 z_index = 5
 offset_left = -6.0
 offset_top = -6.0
@@ -31,7 +36,7 @@ patch_margin_bottom = 13
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
 
-[node name="Grouped" type="TextureRect" parent="."]
+[node name="Grouped" type="TextureRect" parent="." unique_id=1607904462]
 visible = false
 offset_right = 40.0
 offset_bottom = 40.0
