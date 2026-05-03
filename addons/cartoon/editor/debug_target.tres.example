@@ -1,0 +1,13 @@
+; debug_target.tres.example
+; cartoon プラグインの Scene Debugger でテスト再生する CartoonScene を指定するファイルのテンプレート。
+; 各プロジェクトでこのファイルを debug_target.tres にコピーし、
+; scene_path をプロジェクト内のテスト対象シーンに書き換えて使用してください。
+; debug_target.tres 自体は .gitignore で除外されており、commit されません。
+
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://addons/cartoon/editor/debug_target.gd" id="1_3so2o"]
+
+[resource]
+script = ExtResource("1_3so2o")
+scene_path = ""

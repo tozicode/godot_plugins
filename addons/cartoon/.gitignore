@@ -1,2 +1,5 @@
 *.uid
 *.import
+
+# プロジェクト固有のテスト対象設定（debug_target.tres.example をコピーして使用）
+editor/debug_target.tres
