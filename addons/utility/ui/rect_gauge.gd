@@ -2,6 +2,10 @@
 extends ColorRect
 class_name RectGauge
 
+## 内側の矩形と枠の間に空ける余白 (px)。上下左右それぞれに 1px ずつ。
+const INNER_MARGIN :float = 1.0
+
+
 signal changed_value(value_old, value_new)
 signal changed_gauge_color
 
@@ -39,10 +43,10 @@ var tween :Tween
 
 
 func _ready():
-	gauge_front.position = Vector2(1, 1)
-	gauge_delta.position = Vector2(1, 1)
-	gauge_front.size = Vector2(0, size.y - 2)
-	gauge_delta.size = Vector2(0, size.y - 2)
+	gauge_front.position = Vector2(INNER_MARGIN, INNER_MARGIN)
+	gauge_delta.position = Vector2(INNER_MARGIN, INNER_MARGIN)
+	gauge_front.size = Vector2(0, inner_height())
+	gauge_delta.size = Vector2(0, inner_height())
 
 	resized.connect(on_resized)
 	changed_value.connect(on_changed_value)
@@ -55,9 +59,26 @@ func on_resized():
 	on_changed_value(value, value)
 
 
+## 内側の矩形の高さ。枠から上下の余白を引いたもの。
+func inner_height() -> float:
+	return maxf(size.y - INNER_MARGIN * 2.0, 0.0)
+
+
+## 内側の矩形の最大幅。枠から左右の余白を引いたもの。
+func inner_width() -> float:
+	return maxf(size.x - INNER_MARGIN * 2.0, 0.0)
+
+
 ## 数値が変更された時に実行される処理。
 func on_changed_value(value_old, value_new):
-	var w_max :float = size.x - 2
+	# **高さは毎回ここで枠に追従させる。**
+	# `_ready()` で一度きり決めていた頃は、コンテナに縦へ引き伸ばされると
+	# 枠だけ伸びて中身が伸びず、下に隙間が空いていた。
+	# `HBoxContainer` などは既定で子を縦いっぱいに広げるため確実に踏む。
+	gauge_front.size.y = inner_height()
+	gauge_delta.size.y = inner_height()
+
+	var w_max :float = inner_width()
 	var w_old :float = w_max * value_old / 100.0
 	var w_new :float = w_max * value_new / 100.0
 
