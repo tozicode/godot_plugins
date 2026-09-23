@@ -23,9 +23,13 @@ enum {
 ## プロジェクト設定のキー。
 const SETTING_TSV_FILEPATH := "localization/tsv_filepath"
 const SETTING_THEME_STYLES := "localization/theme_styles"
+const SETTING_THEME_STYLES_SHARED := "localization/theme_styles_shared"
 
 const DEFAULT_TSV_FILEPATH := "res://language.tsv.txt"
 const DEFAULT_THEME_STYLES := ["main"]
+## 言語非依存の Theme スタイル (数字専用フォントなど、言語切替の影響を受けないもの)。
+## 命名は `theme_<style>.tres` (言語サフィックスなし) の 1 ファイル。
+const DEFAULT_THEME_STYLES_SHARED := []
 const LANGUAGE_NAMES = ["Ja", "En", "ZhCh", "ZhTw", "Kr"]
 
 ## TSVファイルのパス。プロジェクト設定で上書き可能。
@@ -42,6 +46,14 @@ var theme_styles: Array:
 			return ProjectSettings.get_setting(SETTING_THEME_STYLES)
 		return DEFAULT_THEME_STYLES
 
+## 言語非依存の Theme スタイル種別リスト。プロジェクト設定で上書き可能。
+## こちらは言語サフィックスなしの 1 ファイル (`res://themes/theme_<style>.tres`) を参照する。
+var theme_styles_shared: Array:
+	get:
+		if ProjectSettings.has_setting(SETTING_THEME_STYLES_SHARED):
+			return ProjectSettings.get_setting(SETTING_THEME_STYLES_SHARED)
+		return DEFAULT_THEME_STYLES_SHARED
+
 ## スタイル × 言語 の2次元配列で Theme パスを動的生成する。
 ## theme_paths[style_index][language_index] でアクセスする。
 var theme_paths: Array:
@@ -52,6 +64,14 @@ var theme_paths: Array:
 			for lang in LANGUAGE_NAMES:
 				paths.append("res://themes/theme_%s_%s.tres" % [style, lang.to_lower()])
 			result.append(paths)
+		return result
+
+## 言語非依存スタイル → Theme パスの辞書を返す。
+var theme_paths_shared: Dictionary:
+	get:
+		var result :Dictionary = {}
+		for style in theme_styles_shared:
+			result[style] = "res://themes/theme_%s.tres" % style
 		return result
 
 var _strings = {}
@@ -88,6 +108,7 @@ func _process(_delta: float) -> void:
 
 
 ## 現在の言語に対応する全スタイルの Theme を読み込み、ルートに最初のスタイルを適用する。
+## 言語非依存スタイル (theme_styles_shared) も同じ辞書に読み込む。
 func _apply_language_theme():
 	_themes.clear()
 	var paths = theme_paths  ## 2次元配列: [style_index][language_index]
@@ -107,6 +128,16 @@ func _apply_language_theme():
 			printerr("[Localization] failed to load theme: %s" % theme_path)
 			continue
 		_themes[styles[style_i]] = theme
+	## 言語非依存スタイルの Theme を読み込む (言語切替でも同じファイルを使う)。
+	for shared_style in theme_paths_shared.keys():
+		var theme_path :String = theme_paths_shared[shared_style]
+		if not ResourceLoader.exists(theme_path):
+			continue
+		var theme = load(theme_path)
+		if theme == null:
+			printerr("[Localization] failed to load shared theme: %s" % theme_path)
+			continue
+		_themes[shared_style] = theme
 	## 最初のスタイルの Theme をルートに適用する。
 	if styles.size() > 0 and _themes.has(styles[0]):
 		var tree = get_tree()

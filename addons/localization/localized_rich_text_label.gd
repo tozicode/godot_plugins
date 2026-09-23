@@ -1,8 +1,10 @@
 ## 言語設定によって文字列を変更する RichTextLabel。
-## フォント・フォントサイズは Theme から自動適用される。
+## フォント・フォントサイズ・文字修飾はすべて Theme から適用される。
 ## text_key を設定しない場合は通常の RichTextLabel として使用可能（Theme のフォントのみ適用）。
-## label_settings を設定すると、色・アウトラインを BBCode で再現する。
-## ※ 影（shadow）は BBCode に対応するタグが無いため非対応。
+## 文字修飾 (色・アウトライン・影) も Theme に統合する設計のため、label_settings は使用しない。
+##
+## テキスト中のバッククォート区間 (`+6` など) は number_theme_style で指定した Theme の
+## フォントに置換される。数字を専用フォント (Playfair 等) で描画したいときに使う。
 extends RichTextLabel
 class_name LocalizedRichTextLabel
 
@@ -21,10 +23,17 @@ var theme_style: String = "":
 		theme_style = value
 		_apply_style_theme()
 
-## 文字修飾の設定。色・アウトラインを BBCode として適用する。
-## フォントとフォントサイズは theme_style 経由の Theme から適用されるため無視される。
+## バッククォート区間 (`...`) に適用する Theme スタイル名。
+## 空の場合は区間置換なし。"number" などの言語非依存スタイルで数字専用フォントに切り替える用途を想定。
 @export
-var label_settings: LabelSettings = null
+var number_theme_style: String = "":
+	set(value):
+		number_theme_style = value
+		_reformat()
+
+## set_formatted_text() で受け取った書式なし文字列のキャッシュ。
+## 言語切替 / number_theme_style 更新時の再整形に使う。
+var _raw_text: String = ""
 
 
 func _ready():
@@ -39,6 +48,7 @@ func _ready():
 func _on_changed_language():
 	update_text_by_key()
 	_apply_style_theme()
+	_reformat()
 
 
 ## スタイルに対応する Theme を自身に適用する。
@@ -53,37 +63,65 @@ func _apply_style_theme():
 	theme = t
 
 
+## 書式なしテキストを受け取り、backtick 展開を適用して text にセットする。
+## 例: set_formatted_text("攻撃力`+6`") → "攻撃力[font=<num_font>][font_size=N]+6[/font_size][/font]"
+## プログラムから動的に text を設定する場合はこの関数を使う (キャッシュに保存され、
+## 言語切替時に自動で再整形される)。
+func set_formatted_text(raw :String) -> void:
+	_raw_text = raw
+	text = _format(raw)
+
+
+## number_theme_style が変更されたときに、キャッシュ済みの _raw_text から text を再生成する。
+func _reformat() -> void:
+	if _raw_text.is_empty():
+		return
+	text = _format(_raw_text)
+
+
+## 書式なし文字列に backtick 展開を適用した文字列を返す。
+## 色・アウトライン・影は Theme (RichTextLabel/colors/... 等) で自動適用される。
+func _format(raw :String) -> String:
+	return _wrap_number_segments(raw)
+
+
 ## キー文字列によって Localization から参照される文字列で text を更新する。
 func update_text_by_key():
 	if text_key == "_undefined_" or text_key.is_empty():
 		return
 	if Localization.has_key(text_key):
 		var raw_text = Localization.get_string(text_key)
-		text = _wrap_with_label_settings_bbcode(raw_text)
+		set_formatted_text(raw_text)
 
 
-## LabelSettings の設定を BBCode タグで囲んだ文字列を返す。
-## label_settings が未設定の場合はそのまま返す。
-func _wrap_with_label_settings_bbcode(raw_text: String) -> String:
-	if label_settings == null:
-		return raw_text
-
-	var prefix := ""
-	var suffix := ""
-
-	## アウトラインサイズ
-	if label_settings.outline_size > 0:
-		prefix += "[outline_size=%d]" % label_settings.outline_size
-		suffix = "[/outline_size]" + suffix
-
-	## アウトライン色
-	if label_settings.outline_size > 0 and label_settings.outline_color != Color.BLACK:
-		prefix += "[outline_color=%s]" % label_settings.outline_color.to_html()
-		suffix = "[/outline_color]" + suffix
-
-	## フォント色
-	if label_settings.font_color != Color.WHITE:
-		prefix += "[color=%s]" % label_settings.font_color.to_html()
-		suffix = "[/color]" + suffix
-
-	return prefix + raw_text + suffix
+## バッククォート区間 (`...`) を number_theme_style で指定した Theme のフォント BBCode で
+## 置換する。number_theme_style が未指定 or Theme が見つからない場合はバッククォートを
+## そのまま残す (誤って書式表示されるより素で見えるほうがデバッグしやすいため)。
+func _wrap_number_segments(raw :String) -> String:
+	if number_theme_style.is_empty():
+		return raw
+	var t :Theme = Localization.get_theme(number_theme_style)
+	if t == null or t.default_font == null:
+		return raw
+	var font_path :String = t.default_font.resource_path
+	var font_size :int = t.default_font_size
+	var result :String = ""
+	var pos :int = 0
+	while true:
+		var start :int = raw.find("`", pos)
+		if start < 0:
+			result += raw.substr(pos)
+			break
+		var stop :int = raw.find("`", start + 1)
+		if stop < 0:
+			# ペアで見つからない終端の ` はそのまま残す
+			result += raw.substr(pos)
+			break
+		result += raw.substr(pos, start - pos)
+		var segment :String = raw.substr(start + 1, stop - start - 1)
+		if segment.length() > 0:
+			result += (
+				"[font=%s][font_size=%d]%s[/font_size][/font]"
+				% [font_path, font_size, segment])
+		pos = stop + 1
+	return result
