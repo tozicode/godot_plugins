@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://addons/cartoon/cartoon_panel.gd" id="1_5o3hi"]
 [ext_resource type="Texture2D" path="res://cartoon/frames/sprite_frame.png" id="2_7jnoe"]
 [ext_resource type="Script" path="res://addons/cartoon/cartoon_layout.gd" id="2_wv60r"]
-[ext_resource type="Texture2D" path="res://cartoon/icon_group.png" id="3_j3pf7"]
 
 [sub_resource type="Resource" id="Resource_780tq"]
+resource_local_to_scene = true
 script = ExtResource("2_wv60r")
 
 [node name="CartoonPanel" type="Node2D" unique_id=362313415]
@@ -35,10 +35,3 @@ patch_margin_right = 13
 patch_margin_bottom = 13
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
-
-[node name="Grouped" type="TextureRect" parent="." unique_id=1607904462]
-visible = false
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("3_j3pf7")
-expand_mode = 1

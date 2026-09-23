@@ -20,6 +20,9 @@ signal finished_scene(scene :CartoonScene)
 ## 予約された全てのシーンの再生が完了した時に発行されるシグナル。
 signal finished_all_scenes
 
+## セリフ・オノマトペの表示状態が変化した時に発行されるシグナル。
+signal changed_speeches_and_onomatopoeias_visible
+
 
 ## スワイプと判定するための最小移動距離（スクリーン座標px）。
 const SWIPE_MIN_DISTANCE = 100.0
@@ -39,6 +42,17 @@ var condition_context :ConditionContext
 
 ## 前回の progressed におけるスワイプ方向。
 var last_swipe_direction :SwipeDirection = SwipeDirection.NONE
+
+## セリフ（CartoonSpeech）とオノマトペ（CartoonOnomatopoeia）を表示するかどうかのフラグ。
+## イラスト鑑賞モード実現のため、プロジェクト側からトグルされる想定。
+## アドオン側は状態保持と全パネルへの適用のみを行い、入力検出はプロジェクト側に委ねる。
+var speeches_and_onomatopoeias_visible :bool = true:
+	get: return speeches_and_onomatopoeias_visible
+	set(value):
+		if value != speeches_and_onomatopoeias_visible:
+			speeches_and_onomatopoeias_visible = value
+			_apply_speeches_and_onomatopoeias_visible()
+			changed_speeches_and_onomatopoeias_visible.emit()
 
 ## マウスボタンが押された位置（スワイプ判定用）。
 var _drag_start_pos :Vector2
@@ -252,12 +266,19 @@ func add_panel(panel :CartoonPanel):
 	panel.name = "Panel_%d" % panels_node.get_child_count()
 	panel.make_tween_on_added_to_player()
 	panels_node.add_child(panel)
+	panel.set_speeches_and_onomatopoeias_visible(speeches_and_onomatopoeias_visible)
 	var was_empty := count_panels() == 1
 	focus_index = -1
 	# 最初の1コマ目は focus_index が 0→0 で変化しないため
 	# changed_focus が発火せずカメラ移動が行われない。手動で補う。
 	if was_empty:
 		move_panels_node_position()
+
+
+## 現在の表示状態を全パネルへ適用する。
+func _apply_speeches_and_onomatopoeias_visible():
+	for panel in get_panels():
+		panel.set_speeches_and_onomatopoeias_visible(speeches_and_onomatopoeias_visible)
 
 
 ## 指定のインデックスに対応するコマを含むグループを返す。

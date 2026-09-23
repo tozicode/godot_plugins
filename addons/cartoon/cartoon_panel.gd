@@ -120,9 +120,6 @@ var framed :bool = true:
 ## コマ枠を表すノード。
 @onready var frame :NinePatchRect = $"Frame"
 
-## エディタ上で grouped フラグを表示するためのアイコン。
-@onready var grouped_icon :TextureRect = $"Grouped"
-
 
 ## 空の CartoonPanel インスタンスを返す。
 static func create_empty() -> CartoonPanel:
@@ -181,13 +178,8 @@ static func get_panels_rect(panels :Array) -> Rect2:
 
 
 func _ready():
-	if not Engine.is_editor_hint():
-		grouped_icon.queue_free()
-		grouped_icon = null
-	else:
+	if Engine.is_editor_hint():
 		speeches.child_order_changed.connect(rename_speeches)
-		changed_grouped.connect(_on_changed_grouped)
-		_on_changed_grouped()
 		for speech in speeches.get_children():
 			speech.changed_text.connect(emit_request_update_language)
 	changed_base_size.connect(_on_changed_size)
@@ -210,15 +202,6 @@ func _on_changed_framed():
 		frame.show()
 	else:
 		frame.hide()
-
-
-## grouped の値が変更された時に実行される処理。
-func _on_changed_grouped():
-	if grouped_icon != null:
-		if grouped:
-			grouped_icon.show()
-		else:
-			grouped_icon.hide()
 
 
 ## layout.scale の値が変更された時に実行される処理。
@@ -451,6 +434,17 @@ func get_shape() -> PanelShape:
 		Vector2i(1000, 1600): return PanelShape.VERTICAL_RECT
 		Vector2i(2500, 1600): return PanelShape.LARGE_RECT
 		_: return PanelShape.UNKNOWN
+
+
+## セリフ（Speeches）とオノマトペ（Onomatopoeias）の表示状態を切り替える。
+## @onready 変数を介さず直接ノード参照することで、_ready 前後どちらからも安全に呼べる。
+func set_speeches_and_onomatopoeias_visible(value :bool):
+	var speeches_node = get_node_or_null("Speeches")
+	var onomatopoeias_node = get_node_or_null("Onomatopoeias")
+	if speeches_node != null:
+		speeches_node.visible = value
+	if onomatopoeias_node != null:
+		onomatopoeias_node.visible = value
 
 
 ## コマに含まれる CartoonSpeech の数を返す。

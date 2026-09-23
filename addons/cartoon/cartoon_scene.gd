@@ -8,6 +8,13 @@ class_name CartoonScene
 const SETTING_SCENES_DIRECTORY := "cartoon/scenes_directory"
 const DEFAULT_SCENES_DIRECTORY := "res://cartoon/scenes"
 
+## エディタ上でグループ可視化に用いる半透明矩形の色。
+const GROUP_HIGHLIGHT_COLOR :Color = Color(1.0, 0.95, 0.5, 0.18)
+
+## グループ範囲を囲む際にパネル外接矩形へ加える余白（ローカル座標, px）。
+## 隣接グループの矩形同士が干渉しないよう小さめに設定する。
+const GROUP_HIGHLIGHT_MARGIN :float = 20.0
+
 ## 次のフレームで子のコマの位置を再設定するかどうかのフラグ。
 var do_rearrange_children :bool = false
 
@@ -81,6 +88,39 @@ func rearrange_children():
 			for i in range(begin, end):
 				get_panel(i).update_layout_in_group(panels, i, begin, end)
 		index = end
+
+	# エディタ上のグループ可視化矩形を更新する。
+	queue_redraw()
+
+
+## エディタ上でのみ呼ばれ、グループ範囲を半透明矩形で可視化する。
+## ゲーム実行時は何も描画しない。
+func _draw():
+	if not Engine.is_editor_hint():
+		return
+	for rect in compute_group_highlight_rects(get_panels()):
+		draw_rect(rect, GROUP_HIGHLIGHT_COLOR, true)
+
+
+## エディタ上で描画するグループハイライト矩形の集合を計算する。
+## - 連続して grouped=true でつながる 2 パネル以上のグループのみを対象とする。
+## - 各矩形は CartoonScene のローカル座標系における Rect2 で返す。
+## - 上下左右に GROUP_HIGHLIGHT_MARGIN の余白を加える。
+static func compute_group_highlight_rects(panels :Array) -> Array[Rect2]:
+	var rects :Array[Rect2] = []
+	var index :int = 0
+	while index < panels.size():
+		var begin = CartoonPanel.get_panels_group_begin(panels, index)
+		var end = CartoonPanel.get_panels_group_end(panels, index)
+		if end - begin >= 2:
+			var group_panels :Array = panels.slice(begin, end)
+			var rect :Rect2 = CartoonPanel.get_panels_rect(group_panels)
+			rect.position -= Vector2(GROUP_HIGHLIGHT_MARGIN, GROUP_HIGHLIGHT_MARGIN)
+			rect.size += Vector2(
+				GROUP_HIGHLIGHT_MARGIN * 2, GROUP_HIGHLIGHT_MARGIN * 2)
+			rects.append(rect)
+		index = end
+	return rects
 
 
 ## シーンを CartoonPlayer で再生する直前に実行する処理。

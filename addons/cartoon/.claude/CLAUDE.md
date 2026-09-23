@@ -43,9 +43,9 @@ git commit -m "chore: cartoon プラグインを更新"
 ## プロジェクト固有の設定ファイル
 
 `editor/debug_target.tres` は各プロジェクトでテスト対象シーンが異なるため、
-`.gitignore` で除外されています。新規セットアップ時は `editor/debug_target.tres.example`
-を `editor/debug_target.tres` にコピーし、`scene_path` をプロジェクト内のテスト対象シーンに
-書き換えて使用してください。**commit してはいけません。**
+`.gitignore` で除外されています。ファイルは Cartoon シーンの TestPlay ボタンを
+押したタイミングで `scene_inspector_plugin.gd` が自動生成するため、手動コピーは不要です。
+**commit してはいけません。**
 
 ## .tscn / .tres における UID と unique_id について
 

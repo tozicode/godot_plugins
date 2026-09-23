@@ -84,6 +84,22 @@ var position_delta :Vector2:
 	get: return LABEL_POSITIONS_RELATIVE[frame_type]
 
 
+## インスペクター上で speaker_id を選択する際の表示を、
+## 話者スタイルリストの各 name に基づいた enum 風ドロップダウンに差し替える。
+func _validate_property(property :Dictionary) -> void:
+	if property.name != "speaker_id":
+		return
+	var hint_parts := PackedStringArray(["DEFAULT:0"])
+	var styles := get_speaker_styles()
+	for i in styles.size():
+		var label_text := String(styles[i].name)
+		if label_text.is_empty():
+			label_text = "SPEAKER_%d" % (i + 1)
+		hint_parts.append("%s:%d" % [label_text, i + 1])
+	property.hint = PROPERTY_HINT_ENUM
+	property.hint_string = ",".join(hint_parts)
+
+
 ## 話者スタイル配列をロードして返す。
 static func get_speaker_styles() -> Array[CartoonSpeakerStyle]:
 	if not _speaker_styles_cache.is_empty():
@@ -135,8 +151,11 @@ func _ready() -> void:
 	# ランタイムでも changed_text シグナルに応じた処理を設定しておく
 	changed_text.connect(_on_changed_text)
 
-	_on_changed_text()
+	# speaker → text の順で呼ぶこと。逆だと _resize_label() が theme 適用前の
+	# label_settings.font_size (LabelSettings デフォルト 16) で計算してしまい、
+	# フレームがテキスト (実 30pt) より小さくなる。
 	_on_changed_speaker()
+	_on_changed_text()
 
 
 ## フレーム種別が変更された時に実行される処理。
@@ -164,17 +183,38 @@ func _on_changed_frame():
 ## 話者設定が変更された時に実行される処理。
 func _on_changed_speaker():
 	var styles = get_speaker_styles()
+	var theme_style_name := "cartoon"
 	if speaker_id > 0 and speaker_id <= styles.size():
 		var style = styles[speaker_id - 1]
 		frame.modulate = style.frame_color
 		if style.label_settings != null:
 			label.label_settings = style.label_settings
+		if not style.theme_style_name.is_empty():
+			theme_style_name = style.theme_style_name
 	else:
 		# デフォルト: 白フレーム + 黒テキスト
 		frame.modulate = Color.WHITE
 		var default_label_settings_path = FRAME_SCENE_DIR + "/label_settings_black.tres"
 		if ResourceLoader.exists(default_label_settings_path):
 			label.label_settings = load(default_label_settings_path)
+	# label_settings は色・アウトラインのみを司り、フォントとサイズは Theme から取得する設計。
+	_apply_cartoon_theme(theme_style_name)
+
+
+## 指定スタイルの Theme を Label に適用し、フォントサイズを label_settings に同期する。
+## Localization 側で Theme が未定義の場合は何もしない（label.theme はそのまま）。
+## Godot の Label は label_settings.font_size > 0 が Theme よりも優先されるため、
+## Theme のサイズを反映させるには label_settings 側へ明示的にコピーする必要がある。
+func _apply_cartoon_theme(theme_style_name :String):
+	if not is_instance_valid(Localization):
+		return
+	var t = Localization.get_theme(theme_style_name)
+	if t == null:
+		return
+	label.theme = t
+	if t.has_font_size("font_size", "Label") and label.label_settings != null:
+		label.label_settings = label.label_settings.duplicate()
+		label.label_settings.font_size = t.get_font_size("font_size", "Label")
 
 
 ## テキスト内容が変更された時に実行される処理。
@@ -218,13 +258,39 @@ func _on_changed_text():
 
 ## テキスト内容に応じて label のサイズを調整する。
 func _resize_label():
-	var font = label.label_settings.font
+	var font = _get_active_font()
+	if font == null:
+		return
+	var font_size = _get_active_font_size()
 	var lines = label.text.split("\n")
 	var size_new :Vector2 = Vector2.ZERO
 	for line in lines:
-		size_new.x = max(size_new.x, font.get_string_size(line).x)
-	size_new.y = font.get_height(lines.size())
+		size_new.x = max(
+			size_new.x,
+			font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
+	size_new.y = font.get_height(font_size) * lines.size()
 	label.size = size_new
+
+
+## Label が実際に使うフォントを返す。
+## label_settings に font が設定されていればそれを優先し、
+## なければ Theme から解決する（label.theme → 親ノード → ルート Theme の順）。
+func _get_active_font() -> Font:
+	if label.label_settings != null and label.label_settings.font != null:
+		return label.label_settings.font
+	if label.has_theme_font("font", "Label"):
+		return label.get_theme_font("font", "Label")
+	return null
+
+
+## Label が実際に使うフォントサイズを返す。
+## label_settings.font_size が正の値ならそれを優先し、それ以外は Theme から取得する。
+func _get_active_font_size() -> int:
+	if label.label_settings != null and label.label_settings.font_size > 0:
+		return label.label_settings.font_size
+	if label.has_theme_font_size("font_size", "Label"):
+		return label.get_theme_font_size("font_size", "Label")
+	return 16
 
 
 ## オブジェクトの内容をファイルに書き出す。

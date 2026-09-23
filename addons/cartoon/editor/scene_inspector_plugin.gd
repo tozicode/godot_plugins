@@ -99,7 +99,16 @@ func _on_pressed_add_panel_button():
 func _on_pressed_test_play_button():
 	var scene_root = EditorInterface.get_edited_scene_root()
 	print("[CartoonSceneEditor] test play: \"%s\"" % scene_root.scene_file_path)
-	var debug_target = preload("res://addons/cartoon/editor/debug_target.tres")
+	# debug_target.tres はプロジェクト固有設定のため .gitignore で除外されている。
+	# 初回起動時など未存在のケースに備えてここで自動生成する。
+	var debug_target_path := "res://addons/cartoon/editor/debug_target.tres"
+	var debug_target :Resource
+	if ResourceLoader.exists(debug_target_path):
+		debug_target = load(debug_target_path)
+	else:
+		debug_target = Resource.new()
+		debug_target.set_script(load("res://addons/cartoon/editor/debug_target.gd"))
+		ResourceSaver.save(debug_target, debug_target_path)
 	debug_target.scene_path = scene_root.scene_file_path
 	EditorInterface.edit_resource(debug_target)
 	EditorInterface.play_custom_scene(

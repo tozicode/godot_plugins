@@ -1,5 +1,5 @@
 *.uid
 *.import
 
-# プロジェクト固有のテスト対象設定（debug_target.tres.example をコピーして使用）
+# プロジェクト固有のテスト対象設定（scene_inspector_plugin.gd が自動生成）
 editor/debug_target.tres
