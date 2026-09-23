@@ -17,6 +17,7 @@ offset_left = 1.0
 offset_top = 1.0
 offset_right = 100.0
 offset_bottom = 9.0
+mouse_filter = 2
 
 [node name="Front" type="ColorRect" parent="."]
 layout_mode = 0
@@ -24,4 +25,5 @@ offset_left = 1.0
 offset_top = 1.0
 offset_right = 100.0
 offset_bottom = 9.0
+mouse_filter = 2
 color = Color(1, 0.38039216, 0.08627451, 1)
